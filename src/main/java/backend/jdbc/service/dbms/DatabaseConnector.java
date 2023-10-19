@@ -45,7 +45,7 @@ public class DatabaseConnector {
         return connection;
     }
 
-    public Connection standardConnection(String connectionUrl) throws SQLException {
+    private Connection standardConnection(String connectionUrl) throws SQLException {
         Connection connection;
         try {
             connection = DriverManager.getConnection(connectionUrl, dbmsProperties);
@@ -57,7 +57,7 @@ public class DatabaseConnector {
         return connection;
     }
 
-    public Connection pooledConnection(String connectionUrl) throws SQLException {
+    private Connection pooledConnection(String connectionUrl) throws SQLException {
         if (poolDataSource == null) {
             poolDataSource = new MysqlConnectionPoolDataSource();
             poolDataSource.setURL(connectionUrl);

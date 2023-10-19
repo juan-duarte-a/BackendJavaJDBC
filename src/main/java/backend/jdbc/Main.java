@@ -19,6 +19,10 @@ public class Main {
             System.out.println();
             Fabricante fabricante = main.fabricanteService.getFabricante(7);
             System.out.println(fabricante);
+            
+            System.out.println();
+            fabricante = new Fabricante("Logitech");
+            main.fabricanteService.addFabricante(fabricante);
         } catch (Exception e) {
             if (e instanceof SQLException sqlException) {
                 Dao.printSQLException(sqlException);

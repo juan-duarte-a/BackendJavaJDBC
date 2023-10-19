@@ -22,4 +22,8 @@ public class FabricanteService {
         return fabricanteDao.getAll();
     }
     
+    public void addFabricante(Fabricante fabricante) {
+        fabricanteDao.save(fabricante);
+    }
+    
 }

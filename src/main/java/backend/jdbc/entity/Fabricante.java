@@ -6,6 +6,10 @@ public class Fabricante {
     private String nombre;
 
     public Fabricante() { }
+
+    public Fabricante(String nombre) {
+        this.nombre = nombre;
+    }
     
     public Fabricante(long id, String nombre) {
         this.codigo = id;

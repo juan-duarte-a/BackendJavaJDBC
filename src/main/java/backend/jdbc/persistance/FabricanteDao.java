@@ -28,12 +28,13 @@ public class FabricanteDao implements Dao<Fabricante> {
             String query = "SELECT * FROM fabricante WHERE codigo = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setLong(1, codigo);
-            ResultSet resultSet = statement.executeQuery();
             
-            while (resultSet.next()) {
-                long cod = resultSet.getLong("codigo");
-                String nombre = resultSet.getString("nombre");
-                fabricante = new Fabricante(cod, nombre);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    long cod = resultSet.getLong("codigo");
+                    String nombre = resultSet.getString("nombre");
+                    fabricante = new Fabricante(cod, nombre);
+                }
             }
         } catch (SQLException e) {
             Dao.printSQLException(e);
@@ -49,13 +50,14 @@ public class FabricanteDao implements Dao<Fabricante> {
         try (Connection connection = dbConnector.getConnection()) {
             String query = "SELECT * FROM fabricante";
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
             
-            while (resultSet.next()) {
-                long codigo = resultSet.getLong("codigo");
-                String nombre = resultSet.getString("nombre");
-                Fabricante fabricante = new Fabricante(codigo, nombre);
-                fabricantes.add(fabricante);
+            try (ResultSet resultSet = statement.executeQuery(query)) {
+                while (resultSet.next()) {
+                    long codigo = resultSet.getLong("codigo");
+                    String nombre = resultSet.getString("nombre");
+                    Fabricante fabricante = new Fabricante(codigo, nombre);
+                    fabricantes.add(fabricante);
+                }
             }
         } catch (SQLException e) {
             Dao.printSQLException(e);
@@ -65,17 +67,37 @@ public class FabricanteDao implements Dao<Fabricante> {
     }
 
     @Override
-    public void save(Fabricante t) {
+    public List<Long> save(Fabricante fabricante) {
+        List<Long> keys = new ArrayList<>();
+        
+        try (Connection connection = dbConnector.getConnection()) {
+            String query = "INSERT INTO fabricante (nombre) VALUES (?)";
+            PreparedStatement statement = connection.prepareStatement(
+                    query, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, fabricante.getNombre());
+            int result = statement.executeUpdate();
+            
+            if (result > 0) {
+                try (ResultSet newKeys = statement.getGeneratedKeys()) {
+                    while (newKeys.next()) {
+                        keys.add(newKeys.getLong(1));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            Dao.printSQLException(e);
+        }
+        
+        return keys;
+    }
+
+    @Override
+    public void update(Fabricante fabricante, String... params) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void update(Fabricante t, String... params) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void delete(Fabricante t) {
+    public void delete(Fabricante fabricante) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
