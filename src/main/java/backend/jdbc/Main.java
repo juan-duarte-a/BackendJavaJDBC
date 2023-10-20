@@ -4,13 +4,16 @@ import backend.jdbc.entity.Fabricante;
 import backend.jdbc.entity.Producto;
 import backend.jdbc.persistance.Dao;
 import backend.jdbc.service.FabricanteService;
+import backend.jdbc.service.ProductoService;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
 public class Main {
     
     private final FabricanteService fabricanteService;
+    private final ProductoService productoService;
 
     public static void main(String[] args) {
         try {
@@ -18,18 +21,17 @@ public class Main {
             
             List<Fabricante> fabricantes =  main.fabricanteService.getAllFabricantes();
             fabricantes.forEach(System.out::println);
-            Fabricante fabricante;
             
             System.out.println();
-            fabricante = new Fabricante("Nvidia");
+            Fabricante fabricante = new Fabricante("Nvidia");
             long codigo = main.fabricanteService.addFabricante(fabricante);
             
-            fabricante = main.fabricanteService.getFabricante(codigo);
+            fabricante = main.fabricanteService.getFabricanteById(codigo);
             System.out.println(fabricante);
             
             fabricante.setNombre("Logitech");
             main.fabricanteService.updateFabricante(fabricante);
-            fabricante = main.fabricanteService.getFabricante(codigo);
+            fabricante = main.fabricanteService.getFabricanteById(codigo);
             System.out.println(fabricante);
             
             System.out.println();
@@ -42,7 +44,33 @@ public class Main {
             fabricantes.forEach(System.out::println);
             
             System.out.println();
+            List<Producto> productos = main.productoService.getAllProductos();
+            productos.forEach(System.out::println);
+
+            System.out.println();
+            Producto producto = new Producto(
+                    "SSD SATA 1TB", 
+                    new BigDecimal("250.55"), 
+                    7);
             
+            codigo = main.productoService.addProducto(producto);
+            
+            producto = main.productoService.getProductoById(codigo);
+            System.out.println(producto);
+            
+            producto.setNombre("NVMe m.2 PCIe 2TB");
+            main.productoService.updateProducto(producto);
+            producto = main.productoService.getProductoById(codigo);
+            System.out.println(producto);
+            
+            System.out.println();
+            productos = main.productoService.getAllProductos();
+            productos.forEach(System.out::println);
+            
+            System.out.println();
+            main.productoService.deleteProducto(producto);
+            productos = main.productoService.getAllProductos();
+            productos.forEach(System.out::println);
         } catch (Exception e) {
             if (e instanceof SQLException sqlException) {
                 Dao.printSQLException(sqlException);
@@ -54,10 +82,11 @@ public class Main {
     
     public Main() throws Exception {
         fabricanteService = new FabricanteService();
+        productoService = new ProductoService();
     }
     
     public static void dropDatabase() throws IOException, SQLException {
-        FabricanteService.dropDatabase();
+        Dao.dropDatabase();
     }
     
 }

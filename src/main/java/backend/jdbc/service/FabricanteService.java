@@ -1,7 +1,6 @@
 package backend.jdbc.service;
 
 import backend.jdbc.entity.Fabricante;
-import backend.jdbc.persistance.Dao;
 import backend.jdbc.persistance.FabricanteDao;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -15,8 +14,12 @@ public class FabricanteService {
         fabricanteDao = new FabricanteDao();
     }
     
-    public Fabricante getFabricante(long codigo) {
+    public Fabricante getFabricanteById(long codigo) {
         return fabricanteDao.getById(codigo).orElseThrow();
+    }
+    
+    public List<Fabricante> getFabricanteByName(String name) {
+        return fabricanteDao.getByName(name);
     }
     
     public List<Fabricante> getAllFabricantes() {
@@ -33,10 +36,6 @@ public class FabricanteService {
     
     public void deleteFabricante(Fabricante fabricante) {
         fabricanteDao.delete(fabricante);
-    }
-    
-    public static void dropDatabase() throws IOException, SQLException{
-        Dao.dropDatabase();
     }
     
 }
