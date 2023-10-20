@@ -58,7 +58,7 @@ public class ProductoDao implements Dao<Producto>{
         
         return productos;
     }
-
+    
     @Override
     public List<Producto> getAll() {
         List<Producto> productos = new ArrayList<>();

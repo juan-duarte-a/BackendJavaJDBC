@@ -71,6 +71,19 @@ public class Main {
             main.productoService.deleteProducto(producto);
             productos = main.productoService.getAllProductos();
             productos.forEach(System.out::println);
+            
+            System.out.println();
+            productos = main.productoService.getProductosPriceBetween(
+                    new BigDecimal("120"), new BigDecimal("202"));
+            productos.forEach(System.out::println);
+            
+            System.out.println();
+            productos = main.productoService.getProductoByNameContains("portátil");
+            productos.forEach(System.out::println);
+            
+            System.out.println();
+            producto = main.productoService.getCheapestProducto();
+            System.out.println(producto);
         } catch (Exception e) {
             if (e instanceof SQLException sqlException) {
                 Dao.printSQLException(sqlException);
