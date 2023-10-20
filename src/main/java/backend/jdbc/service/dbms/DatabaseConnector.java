@@ -109,5 +109,9 @@ public class DatabaseConnector {
             }
         }
     }
+    
+    public String getDatabaseName() {
+        return dbmsProperties.getProperty("database");
+    }
 
 }

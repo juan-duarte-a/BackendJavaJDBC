@@ -11,6 +11,12 @@ public class Producto {
     
     public Producto() { }
 
+    public Producto(String nombre, BigDecimal precio, long codigoFabricante) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.codigoFabricante = codigoFabricante;
+    }
+    
     public Producto(long codigo, String nombre, BigDecimal precio, long codigoFabricante) {
         this.codigo = codigo;
         this.nombre = nombre;
@@ -48,6 +54,14 @@ public class Producto {
 
     public void setCodigoFabricante(long codigoFabricante) {
         this.codigoFabricante = codigoFabricante;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto: [código = " + codigo + 
+                ", nombre = " + nombre + 
+                ", precio = " + precio.toString() + 
+                ", codigoFabricante = " + codigoFabricante + "]";
     }
     
 }
