@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ProductoDao implements Dao<Producto>{
+public class ProductoDAO implements DAO<Producto>{
     
     private final DatabaseConnector dbConnector;
     
-    public ProductoDao() throws IOException, SQLException {
+    public ProductoDAO() throws IOException, SQLException {
         dbConnector = new DatabaseConnector();
     }
     
@@ -34,7 +34,7 @@ public class ProductoDao implements Dao<Producto>{
                 producto = mapToProducto(resultSet);
             }
         } catch (SQLException e) {
-            Dao.printSQLException(e);
+            DAO.printSQLException(e);
         }
         
         return Optional.ofNullable(producto.isEmpty() ? null : producto.get(0));
@@ -53,7 +53,7 @@ public class ProductoDao implements Dao<Producto>{
                 productos = mapToProducto(resultSet);
             }
         } catch (SQLException e) {
-            Dao.printSQLException(e);
+            DAO.printSQLException(e);
         }
         
         return productos;
@@ -71,7 +71,7 @@ public class ProductoDao implements Dao<Producto>{
                 productos = mapToProducto(resultSet);
             }
         } catch (SQLException e) {
-            Dao.printSQLException(e);
+            DAO.printSQLException(e);
         }
         
         return productos;
@@ -99,7 +99,7 @@ public class ProductoDao implements Dao<Producto>{
                 }
             }
         } catch (SQLException e) {
-            Dao.printSQLException(e);
+            DAO.printSQLException(e);
         }
         
         return keys;
@@ -118,7 +118,7 @@ public class ProductoDao implements Dao<Producto>{
             statement.setLong(4, producto.getCodigo());
             statement.executeUpdate();
         } catch (SQLException e) {
-            Dao.printSQLException(e);
+            DAO.printSQLException(e);
         }
     }
 
@@ -130,7 +130,7 @@ public class ProductoDao implements Dao<Producto>{
             statement.setLong(1, producto.getCodigo());
             statement.executeUpdate();
         } catch (SQLException e) {
-            Dao.printSQLException(e);
+            DAO.printSQLException(e);
         }
     }
     

@@ -1,17 +1,17 @@
 package backend.jdbc.service;
 
 import backend.jdbc.entity.Fabricante;
-import backend.jdbc.persistance.FabricanteDao;
+import backend.jdbc.persistance.FabricanteDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 public class FabricanteService {
     
-    private final FabricanteDao fabricanteDao;
+    private final FabricanteDAO fabricanteDao;
     
     public FabricanteService() throws IOException, SQLException {
-        fabricanteDao = new FabricanteDao();
+        fabricanteDao = new FabricanteDAO();
     }
     
     public Fabricante getFabricanteById(long codigo) {

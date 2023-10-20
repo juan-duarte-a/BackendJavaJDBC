@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class FabricanteDao implements Dao<Fabricante> {
+public class FabricanteDAO implements DAO<Fabricante> {
     
     private final DatabaseConnector dbConnector;
     
-    public FabricanteDao() throws IOException, SQLException {
+    public FabricanteDAO() throws IOException, SQLException {
         dbConnector = new DatabaseConnector();
     }
     
@@ -33,7 +33,7 @@ public class FabricanteDao implements Dao<Fabricante> {
                 fabricante = mapToFabricante(resultSet);
             }
         } catch (SQLException e) {
-            Dao.printSQLException(e);
+            DAO.printSQLException(e);
         }
         
         return Optional.ofNullable(fabricante.isEmpty() ? null : fabricante.get(0));
@@ -52,7 +52,7 @@ public class FabricanteDao implements Dao<Fabricante> {
                 fabricantes = mapToFabricante(resultSet);
             }
         } catch (SQLException e) {
-            Dao.printSQLException(e);
+            DAO.printSQLException(e);
         }
         
         return fabricantes;
@@ -70,7 +70,7 @@ public class FabricanteDao implements Dao<Fabricante> {
                 fabricantes = mapToFabricante(resultSet);
             }
         } catch (SQLException e) {
-            Dao.printSQLException(e);
+            DAO.printSQLException(e);
         }
         
         return fabricantes;
@@ -95,7 +95,7 @@ public class FabricanteDao implements Dao<Fabricante> {
                 }
             }
         } catch (SQLException e) {
-            Dao.printSQLException(e);
+            DAO.printSQLException(e);
         }
         
         return keys;
@@ -110,7 +110,7 @@ public class FabricanteDao implements Dao<Fabricante> {
             statement.setLong(2, fabricante.getCodigo());
             statement.executeUpdate();
         } catch (SQLException e) {
-            Dao.printSQLException(e);
+            DAO.printSQLException(e);
         }
     }
 
@@ -122,7 +122,7 @@ public class FabricanteDao implements Dao<Fabricante> {
             statement.setLong(1, fabricante.getCodigo());
             statement.executeUpdate();
         } catch (SQLException e) {
-            Dao.printSQLException(e);
+            DAO.printSQLException(e);
         }
     }
     

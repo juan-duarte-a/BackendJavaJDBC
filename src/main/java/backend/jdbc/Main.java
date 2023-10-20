@@ -2,13 +2,13 @@ package backend.jdbc;
 
 import backend.jdbc.entity.Fabricante;
 import backend.jdbc.entity.Producto;
-import backend.jdbc.persistance.Dao;
 import backend.jdbc.service.FabricanteService;
 import backend.jdbc.service.ProductoService;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+import backend.jdbc.persistance.DAO;
 
 public class Main {
     
@@ -86,7 +86,7 @@ public class Main {
             System.out.println(producto);
         } catch (Exception e) {
             if (e instanceof SQLException sqlException) {
-                Dao.printSQLException(sqlException);
+                DAO.printSQLException(sqlException);
             } else {
                 System.err.println(e.getMessage());
             }
@@ -99,7 +99,7 @@ public class Main {
     }
     
     public static void dropDatabase() throws IOException, SQLException {
-        Dao.dropDatabase();
+        DAO.dropDatabase();
     }
     
 }

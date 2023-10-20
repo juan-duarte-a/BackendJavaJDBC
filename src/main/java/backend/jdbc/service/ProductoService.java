@@ -1,7 +1,7 @@
 package backend.jdbc.service;
 
 import backend.jdbc.entity.Producto;
-import backend.jdbc.persistance.ProductoDao;
+import backend.jdbc.persistance.ProductoDAO;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -9,10 +9,10 @@ import java.util.List;
 
 public class ProductoService {
     
-    private final ProductoDao productoDao;
+    private final ProductoDAO productoDao;
     
     public ProductoService() throws IOException, SQLException {
-        productoDao = new ProductoDao();
+        productoDao = new ProductoDAO();
     }
     
     public Producto getProductoById(long codigo) {

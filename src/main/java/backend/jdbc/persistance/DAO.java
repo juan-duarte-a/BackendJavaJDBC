@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-public interface Dao<T> {
+public interface DAO<T> {
     
     Optional<T> getById(long id);
     List<T> getByName(String name);
