@@ -1,7 +1,7 @@
 package backend.jdbc.service;
 
 import backend.jdbc.entity.Fabricante;
-import backend.jdbc.persistance.FabricanteDAO;
+import backend.jdbc.persistence.FabricanteDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
-import backend.jdbc.persistance.DAO;
+import backend.jdbc.persistence.DAO;
 
 public class Main {
     

@@ -1,7 +1,7 @@
 package backend.jdbc.service;
 
 import backend.jdbc.entity.Producto;
-import backend.jdbc.persistance.ProductoDAO;
+import backend.jdbc.persistence.ProductoDAO;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;

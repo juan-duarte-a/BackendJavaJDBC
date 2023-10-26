@@ -1,9 +1,8 @@
-package backend.jdbc.persistance;
+package backend.jdbc.persistence;
 
-import backend.jdbc.entity.Producto;
+import backend.jdbc.entity.Fabricante;
 import backend.jdbc.service.dbms.DatabaseConnector;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,82 +12,79 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ProductoDAO implements DAO<Producto>{
+public class FabricanteDAO implements DAO<Fabricante> {
     
     private final DatabaseConnector dbConnector;
     
-    public ProductoDAO() throws IOException, SQLException {
+    public FabricanteDAO() throws IOException, SQLException {
         dbConnector = new DatabaseConnector();
     }
     
     @Override
-    public Optional<Producto> getById(long codigo) {
-        List<Producto> producto = new ArrayList<>();
+    public Optional<Fabricante> getById(long codigo) {
+        List<Fabricante> fabricante = new ArrayList<>();
         
         try (Connection connection = dbConnector.getConnection()) {
-            String query = "SELECT * FROM producto WHERE codigo = ?";
+            String query = "SELECT * FROM fabricante WHERE codigo = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setLong(1, codigo);
             
             try (ResultSet resultSet = statement.executeQuery()) {
-                producto = mapToProducto(resultSet);
+                fabricante = mapToFabricante(resultSet);
             }
         } catch (SQLException e) {
             DAO.printSQLException(e);
         }
         
-        return Optional.ofNullable(producto.isEmpty() ? null : producto.get(0));
+        return Optional.ofNullable(fabricante.isEmpty() ? null : fabricante.get(0));
     }
     
     @Override
-    public List<Producto> getByName(String nombre) {
-        List<Producto> productos = new ArrayList<>();
+    public List<Fabricante> getByName(String nombre) {
+        List<Fabricante> fabricantes = new ArrayList<>();
         
         try (Connection connection = dbConnector.getConnection()) {
-            String query = "SELECT * FROM producto WHERE nombre LIKE ?";
+            String query = "SELECT * FROM fabricante WHERE nombre LIKE ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, nombre);
             
             try (ResultSet resultSet = statement.executeQuery()) {
-                productos = mapToProducto(resultSet);
+                fabricantes = mapToFabricante(resultSet);
             }
         } catch (SQLException e) {
             DAO.printSQLException(e);
         }
         
-        return productos;
-    }
-    
-    @Override
-    public List<Producto> getAll() {
-        List<Producto> productos = new ArrayList<>();
-        
-        try (Connection connection = dbConnector.getConnection()) {
-            String query = "SELECT * FROM producto";
-            Statement statement = connection.createStatement();
-            
-            try (ResultSet resultSet = statement.executeQuery(query)) {
-                productos = mapToProducto(resultSet);
-            }
-        } catch (SQLException e) {
-            DAO.printSQLException(e);
-        }
-        
-        return productos;
+        return fabricantes;
     }
 
     @Override
-    public List<Long> save(Producto producto) {
+    public List<Fabricante> getAll() {
+        List<Fabricante> fabricantes = new ArrayList<>();
+        
+        try (Connection connection = dbConnector.getConnection()) {
+            String query = "SELECT * FROM fabricante";
+            Statement statement = connection.createStatement();
+            
+            try (ResultSet resultSet = statement.executeQuery(query)) {
+                fabricantes = mapToFabricante(resultSet);
+            }
+        } catch (SQLException e) {
+            DAO.printSQLException(e);
+        }
+        
+        return fabricantes;
+    }
+
+    @Override
+    public List<Long> save(Fabricante fabricante) {
         List<Long> keys = new ArrayList<>();
         
         try (Connection connection = dbConnector.getConnection()) {
-            String query = "INSERT INTO producto "
-                    + "(nombre, precio, codigo_fabricante) VALUES (?, ?, ?)";
+            String query = "INSERT INTO fabricante (nombre) VALUES (?)";
             PreparedStatement statement = connection.prepareStatement(
                     query, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, producto.getNombre());
-            statement.setString(2, producto.getPrecio().toPlainString());
-            statement.setLong(3, producto.getCodigoFabricante());
+            statement.setString(1, fabricante.getNombre());
             int result = statement.executeUpdate();
             
             if (result > 0) {
@@ -106,16 +102,12 @@ public class ProductoDAO implements DAO<Producto>{
     }
 
     @Override
-    public void update(Producto producto, String... params) {
+    public void update(Fabricante fabricante, String... params) {
         try (Connection connection = dbConnector.getConnection()) {
-            String query = "UPDATE producto "
-                    + "SET nombre = ?, precio = ?, codigo_fabricante = ? "
-                    + "WHERE codigo = ?";
+            String query = "UPDATE fabricante SET nombre = ? WHERE codigo = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, producto.getNombre());
-            statement.setString(2, producto.getPrecio().toPlainString());
-            statement.setLong(3, producto.getCodigoFabricante());
-            statement.setLong(4, producto.getCodigo());
+            statement.setString(1, fabricante.getNombre());
+            statement.setLong(2, fabricante.getCodigo());
             statement.executeUpdate();
         } catch (SQLException e) {
             DAO.printSQLException(e);
@@ -123,30 +115,28 @@ public class ProductoDAO implements DAO<Producto>{
     }
 
     @Override
-    public void delete(Producto producto) {
+    public void delete(Fabricante fabricante) {
         try (Connection connection = dbConnector.getConnection()) {
-            String query = "DELETE FROM producto WHERE codigo = ?";
+            String query = "DELETE FROM fabricante WHERE codigo = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setLong(1, producto.getCodigo());
+            statement.setLong(1, fabricante.getCodigo());
             statement.executeUpdate();
         } catch (SQLException e) {
             DAO.printSQLException(e);
         }
     }
     
-    private List<Producto> mapToProducto(ResultSet resultSet) throws SQLException {
-        List<Producto> productos = new ArrayList<>();
+    private List<Fabricante> mapToFabricante(ResultSet resultSet) throws SQLException {
+        List<Fabricante> fabricantes = new ArrayList<>();
         
         while (resultSet.next()) {
-            long codigo = resultSet.getLong("codigo");
+            long cod = resultSet.getLong("codigo");
             String nombre = resultSet.getString("nombre");
-            BigDecimal precio = new BigDecimal(resultSet.getString("precio"));
-            long codigoFabricante = resultSet.getLong("codigo_fabricante");
-            Producto producto = new Producto(codigo, nombre, precio, codigoFabricante);
-            productos.add(producto);
+            Fabricante fabricante = new Fabricante(cod, nombre);
+            fabricantes.add(fabricante);
         }
         
-        return productos;
+        return fabricantes;
     }
     
 }

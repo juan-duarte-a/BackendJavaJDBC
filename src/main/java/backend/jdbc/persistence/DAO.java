@@ -1,4 +1,4 @@
-package backend.jdbc.persistance;
+package backend.jdbc.persistence;
 
 import backend.jdbc.service.dbms.DatabaseConnector;
 import java.io.IOException;
